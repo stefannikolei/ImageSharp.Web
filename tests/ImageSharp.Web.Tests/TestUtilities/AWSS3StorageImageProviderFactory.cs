@@ -20,15 +20,15 @@ public static class AWSS3StorageImageProviderFactory
         FormatUtilities utilities = services.GetRequiredService<FormatUtilities>();
         AsyncHelper.RunSync(() => InitializeAWSStorageAsync(services, options.Value));
 
-        return new AWSS3StorageImageProvider(options, utilities);
+        return new AWSS3StorageImageProvider(options, utilities, services);
     }
 
     private static async Task InitializeAWSStorageAsync(IServiceProvider services, AWSS3StorageImageProviderOptions options)
     {
         // Upload an image to the AWS Test Storage;
         AWSS3BucketClientOptions bucketOptions = options.S3Buckets.First();
-        AmazonS3Client amazonS3Client = AmazonS3ClientFactory.CreateClient(bucketOptions);
-        ListBucketsResponse listBucketsResponse = await amazonS3Client.ListBucketsAsync();
+        using AmazonS3BucketClient amazonS3Client = AmazonS3ClientFactory.CreateClient(bucketOptions);
+        ListBucketsResponse listBucketsResponse = await amazonS3Client.Client.ListBucketsAsync();
 
         bool foundBucket = false;
         foreach (S3Bucket b in listBucketsResponse.Buckets)
@@ -51,12 +51,12 @@ public static class AWSS3StorageImageProviderFactory
                     CannedACL = S3CannedACL.PublicRead
                 };
 
-                await amazonS3Client.PutBucketAsync(putBucketRequest);
+                await amazonS3Client.Client.PutBucketAsync(putBucketRequest);
             }
             catch (AmazonS3Exception e)
             {
                 // CI tests are run in parallel and can sometimes return a
-                // false negative for the existance of a bucket.
+                // false negative for the existence of a bucket.
                 if (string.Equals(e.ErrorCode, "BucketAlreadyExists", StringComparison.Ordinal))
                 {
                     return;
@@ -76,12 +76,12 @@ public static class AWSS3StorageImageProviderFactory
                 Key = TestConstants.ImagePath
             };
 
-            await amazonS3Client.GetObjectAsync(request);
+            await amazonS3Client.Client.GetObjectAsync(request);
         }
         catch
         {
             IFileInfo file = environment.WebRootFileProvider.GetFileInfo(TestConstants.ImagePath);
-            using Stream stream = file.CreateReadStream();
+            await using Stream stream = file.CreateReadStream();
 
             // Set the max-age property so we get coverage for testing in our AWS provider.
             CacheControlHeaderValue cacheControl = new()
@@ -100,10 +100,12 @@ public static class AWSS3StorageImageProviderFactory
                     CacheControl = cacheControl.ToString()
                 },
                 ContentType = "	image/png",
-                InputStream = stream
+                InputStream = stream,
+                AutoCloseStream = false,
+                UseChunkEncoding = false,
             };
 
-            await amazonS3Client.PutObjectAsync(putRequest);
+            await amazonS3Client.Client.PutObjectAsync(putRequest);
         }
     }
 }

@@ -41,9 +41,11 @@ public class AzureBlobStorageImageProvider : IImageProvider
     /// </summary>
     /// <param name="storageOptions">The blob storage options.</param>
     /// <param name="formatUtilities">Contains various format helper methods based on the current configuration.</param>
+    /// <param name="serviceProvider">The current service provider</param>
     public AzureBlobStorageImageProvider(
         IOptions<AzureBlobStorageImageProviderOptions> storageOptions,
-        FormatUtilities formatUtilities)
+        FormatUtilities formatUtilities,
+        IServiceProvider serviceProvider)
     {
         Guard.NotNull(storageOptions, nameof(storageOptions));
 
@@ -51,9 +53,11 @@ public class AzureBlobStorageImageProvider : IImageProvider
 
         foreach (AzureBlobContainerClientOptions container in storageOptions.Value.BlobContainers)
         {
-            this.containers.Add(
-                container.ContainerName!,
-                new BlobContainerClient(container.ConnectionString, container.ContainerName));
+            BlobContainerClient client =
+                container.BlobContainerClientFactory?.Invoke(container, serviceProvider)
+                ?? new BlobContainerClient(container.ConnectionString, container.ContainerName);
+
+            this.containers.Add(client.Name, client);
         }
     }
 
@@ -105,7 +109,7 @@ public class AzureBlobStorageImageProvider : IImageProvider
         }
 
         // Blob name should be the remaining path string.
-        string blobName = path.Substring(containerName.Length).TrimStart(SlashChars);
+        string blobName = path[containerName.Length..].TrimStart(SlashChars);
 
         if (string.IsNullOrWhiteSpace(blobName))
         {
@@ -128,7 +132,7 @@ public class AzureBlobStorageImageProvider : IImageProvider
 
     private bool IsMatch(HttpContext context)
     {
-        // Only match loosly here for performance.
+        // Only match loosely here for performance.
         // Path matching conflicts should be dealt with by configuration.
         string? path = context.Request.Path.Value?.TrimStart(SlashChars);
 

@@ -9,6 +9,9 @@ namespace SixLabors.ImageSharp.Web.Caching.AWS;
 public class AWSS3StorageCacheOptions : IAWSS3BucketClientOptions
 {
     /// <inheritdoc/>
+    public Func<IAWSS3BucketClientOptions, IServiceProvider, AmazonS3BucketClient>? S3ClientFactory { get; set; }
+
+    /// <inheritdoc/>
     public string? Region { get; set; }
 
     /// <inheritdoc/>

@@ -20,6 +20,9 @@ public class AWSS3StorageImageProviderOptions
 public class AWSS3BucketClientOptions : IAWSS3BucketClientOptions
 {
     /// <inheritdoc/>
+    public Func<IAWSS3BucketClientOptions, IServiceProvider, AmazonS3BucketClient>? S3ClientFactory { get; set; }
+
+    /// <inheritdoc/>
     public string? Region { get; set; }
 
     /// <inheritdoc/>

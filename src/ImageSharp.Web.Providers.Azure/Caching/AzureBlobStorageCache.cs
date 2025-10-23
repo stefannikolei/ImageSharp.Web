@@ -22,13 +22,17 @@ public class AzureBlobStorageCache : IImageCache
     /// Initializes a new instance of the <see cref="AzureBlobStorageCache"/> class.
     /// </summary>
     /// <param name="cacheOptions">The cache options.</param>
-    public AzureBlobStorageCache(IOptions<AzureBlobStorageCacheOptions> cacheOptions)
+    /// <param name="serviceProvider">The current service provider.</param>
+    public AzureBlobStorageCache(IOptions<AzureBlobStorageCacheOptions> cacheOptions, IServiceProvider serviceProvider)
     {
         Guard.NotNull(cacheOptions, nameof(cacheOptions));
         AzureBlobStorageCacheOptions options = cacheOptions.Value;
 
-        this.container = new BlobContainerClient(options.ConnectionString, options.ContainerName);
-        this.cacheFolder = string.IsNullOrEmpty(options.CacheFolder)
+        this.container =
+            options.BlobContainerClientFactory?.Invoke(options, serviceProvider)
+            ?? new BlobContainerClient(options.ConnectionString, options.ContainerName);
+
+        this.cacheFolder = string.IsNullOrWhiteSpace(options.CacheFolder)
             ? string.Empty
             : options.CacheFolder.Trim().Trim('/') + '/';
     }
