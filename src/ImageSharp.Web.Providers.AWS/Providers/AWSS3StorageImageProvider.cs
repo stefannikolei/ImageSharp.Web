@@ -154,7 +154,7 @@ public class AWSS3StorageImageProvider : IImageProvider, IDisposable
     }
 
     // ref https://github.com/aws/aws-sdk-net/blob/master/sdk/src/Services/S3/Custom/_bcl/IO/S3FileInfo.cs#L118
-    private static async Task<KeyExistsResult> KeyExists(IAmazonS3 s3Client, string bucketName, string key)
+    private static async Task<KeyExistsResult> KeyExists(AmazonS3Client s3Client, string bucketName, string key)
     {
         try
         {
