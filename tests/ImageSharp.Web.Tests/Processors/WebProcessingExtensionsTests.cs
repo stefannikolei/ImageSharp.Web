@@ -12,20 +12,20 @@ public class WebProcessingExtensionsTests
     [Fact]
     public void WebProcessingExtensions_GetBySupportedCommands()
     {
-        IImageWebProcessor[] processors = new IImageWebProcessor[]
-        {
+        IImageWebProcessor[] processors =
+        [
             new QualityWebProcessor(),
             new ResizeWebProcessor(),
             new BackgroundColorWebProcessor(),
             new MockWebProcessor()
-        };
+        ];
 
-        CommandCollection commands = new()
-        {
+        CommandCollection commands =
+        [
             new KeyValuePair<string, string>(ResizeWebProcessor.Width, null),
             new KeyValuePair<string, string>(QualityWebProcessor.Quality, null),
             new KeyValuePair<string, string>(ResizeWebProcessor.Height, null)
-        };
+        ];
 
         IReadOnlyList<(int Index, IImageWebProcessor Processor)> supportedProcessors = processors.OrderBySupportedCommands(commands);
 
@@ -37,12 +37,12 @@ public class WebProcessingExtensionsTests
     [Fact]
     public void WebProcessingExtensions_GetBySupportedCommands_Empty()
     {
-        IImageWebProcessor[] processors = new IImageWebProcessor[]
-        {
+        IImageWebProcessor[] processors =
+        [
             new MockWebProcessor()
-        };
+        ];
 
-        CommandCollection commands = new();
+        CommandCollection commands = [];
 
         IReadOnlyList<(int Index, IImageWebProcessor Processor)> supportedProcessors = processors.OrderBySupportedCommands(commands);
 

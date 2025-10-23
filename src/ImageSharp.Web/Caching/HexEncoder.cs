@@ -12,7 +12,8 @@ namespace SixLabors.ImageSharp.Web.Caching;
 internal static class HexEncoder
 {
     // LUT's that provide the hexidecimal representation of each possible byte value.
-    private static readonly char[] HexLutBase = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private static readonly char[] HexLutBase = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+    ];
 
     // The base LUT arranged in 16x each item order. 0 * 16, 1 * 16, .... F * 16
     private static readonly char[] HexLutHi = Enumerable.Range(0, 256).Select(x => HexLutBase[x / 0x10]).ToArray();

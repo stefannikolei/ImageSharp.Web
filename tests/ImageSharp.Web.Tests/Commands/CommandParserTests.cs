@@ -93,19 +93,19 @@ public class CommandParserTests
     public static TheoryData<int[], string, CultureInfo> IntegralArrays { get; }
         = new()
         {
-        { new[] { 1, 2, 3, 4 }, ToNumericList(Inv, 1, 2, 3, 4), Inv },
+        { [1, 2, 3, 4], ToNumericList(Inv, 1, 2, 3, 4), Inv },
     };
 
     public static TheoryData<float[], string, CultureInfo> RealArraysInv { get; }
         = new()
         {
-        { new[] { 1.667F, 2.667F, 3.667F, 4.667F }, ToNumericList(Inv, 1.667F, 2.667F, 3.667F, 4.667F), Inv },
+        { [1.667F, 2.667F, 3.667F, 4.667F], ToNumericList(Inv, 1.667F, 2.667F, 3.667F, 4.667F), Inv },
     };
 
     public static TheoryData<float[], string, CultureInfo> RealArraysDk { get; }
         = new()
         {
-        { new[] { 1.667F, 2.667F, 3.667F, 4.667F }, ToNumericList(Dk, 1.667F, 2.667F, 3.667F, 4.667F), Dk },
+        { [1.667F, 2.667F, 3.667F, 4.667F], ToNumericList(Dk, 1.667F, 2.667F, 3.667F, 4.667F), Dk },
     };
 
     public static TheoryData<object, string, CultureInfo> IntegralLists { get; }
@@ -117,7 +117,7 @@ public class CommandParserTests
     public static TheoryData<List<float>, string, CultureInfo> RealLists { get; }
         = new()
         {
-        { new List<float> { 1.667F, 2.667F, 3.667F, 4.667F }, "1.667,2.667,3.667,4.667", Inv },
+        { [1.667F, 2.667F, 3.667F, 4.667F], "1.667,2.667,3.667,4.667", Inv },
     };
 
     public static TheoryData<Color, string, CultureInfo> ColorValuesInv { get; }
@@ -177,8 +177,8 @@ public class CommandParserTests
 
     private static CommandParser GetCommandParser()
     {
-        List<ICommandConverter> converters = new()
-        {
+        List<ICommandConverter> converters =
+        [
             new IntegralNumberConverter<sbyte>(),
             new IntegralNumberConverter<byte>(),
             new IntegralNumberConverter<short>(),
@@ -224,7 +224,7 @@ public class CommandParserTests
             new ListConverter<double>(),
             new ListConverter<string>(),
             new ListConverter<bool>()
-        };
+        ];
 
         return new CommandParser(converters);
     }

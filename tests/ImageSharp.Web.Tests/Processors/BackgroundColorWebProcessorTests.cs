@@ -18,10 +18,8 @@ public class BackgroundColorWebProcessorTests
         CommandParser parser = new(new[] { new ColorConverter() });
         CultureInfo culture = CultureInfo.InvariantCulture;
 
-        CommandCollection commands = new()
-        {
-            { new KeyValuePair<string, string>(BackgroundColorWebProcessor.Color, nameof(Color.Orange)) }
-        };
+        CommandCollection commands =
+            [new KeyValuePair<string, string>(BackgroundColorWebProcessor.Color, nameof(Color.Orange))];
 
         using Image<Rgba32> image = new(1, 1);
         Assert.True(Color.Transparent.Equals(image[0, 0]));
@@ -42,10 +40,7 @@ public class BackgroundColorWebProcessorTests
         CommandParser parser = new(new[] { new ColorConverter() });
         CultureInfo culture = CultureInfo.InvariantCulture;
 
-        CommandCollection commands = new()
-        {
-            { new KeyValuePair<string, string>(BackgroundColorWebProcessor.Color, color) }
-        };
+        CommandCollection commands = [new KeyValuePair<string, string>(BackgroundColorWebProcessor.Color, color)];
 
         Assert.True(new BackgroundColorWebProcessor().RequiresTrueColorPixelFormat(commands, parser, culture));
     }

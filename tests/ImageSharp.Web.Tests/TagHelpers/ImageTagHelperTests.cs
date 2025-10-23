@@ -33,7 +33,7 @@ public sealed class ImageTagHelperTests : IDisposable
 {
     public ImageTagHelperTests()
     {
-        ServiceCollection services = new();
+        ServiceCollection services = [];
         services.AddSingleton<IWebHostEnvironment, FakeWebHostEnvironment>();
         services.AddImageSharp();
         this.Provider = services.BuildServiceProvider();
@@ -727,7 +727,7 @@ public sealed class ImageTagHelperTests : IDisposable
 
     private static TagHelperOutput MakeImageTagHelperOutput(TagHelperAttributeList attributes)
     {
-        attributes ??= new TagHelperAttributeList();
+        attributes ??= [];
 
         return new TagHelperOutput(
             "img",

@@ -17,7 +17,7 @@ namespace SixLabors.ImageSharp.Web;
 /// </summary>
 public sealed class FormatUtilities
 {
-    private readonly List<string> extensions = new();
+    private readonly List<string> extensions = [];
     private readonly Dictionary<string, string> extensionsByMimeType = new();
 
     /// <summary>

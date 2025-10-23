@@ -11,11 +11,11 @@ public class QueryCollectionUriParserTests
     [Fact]
     public void QueryCollectionParserExtractsCommands()
     {
-        CommandCollection expected = new()
-        {
-            { new KeyValuePair<string, string>("width", "400") },
-            { new KeyValuePair<string, string>("height", "200") }
-        };
+        CommandCollection expected =
+        [
+            new KeyValuePair<string, string>("width", "400"),
+            new KeyValuePair<string, string>("height", "200")
+        ];
 
         HttpContext context = CreateHttpContext();
         CommandCollection actual = new QueryCollectionRequestParser().ParseRequestCommands(context);

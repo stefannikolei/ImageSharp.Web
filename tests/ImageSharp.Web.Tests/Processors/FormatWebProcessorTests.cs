@@ -34,10 +34,10 @@ public class FormatWebProcessorTests
         CommandParser parser = new(Array.Empty<ICommandConverter>());
         CultureInfo culture = CultureInfo.InvariantCulture;
 
-        CommandCollection commands = new()
-        {
-            { new KeyValuePair<string, string>(FormatWebProcessor.Format, GifFormat.Instance.Name) },
-        };
+        CommandCollection commands =
+        [
+            new KeyValuePair<string, string>(FormatWebProcessor.Format, GifFormat.Instance.Name)
+        ];
 
         using Image<Rgba32> image = new(1, 1);
         using FormattedImage formatted = new(image, PngFormat.Instance);
@@ -56,10 +56,10 @@ public class FormatWebProcessorTests
         CommandParser parser = new(Array.Empty<ICommandConverter>());
         CultureInfo culture = CultureInfo.InvariantCulture;
 
-        CommandCollection commands = new()
-        {
-            { new KeyValuePair<string, string>(FormatWebProcessor.Format, format) },
-        };
+        CommandCollection commands =
+        [
+            new KeyValuePair<string, string>(FormatWebProcessor.Format, format)
+        ];
 
         FormatWebProcessor processor = new(Options.Create(new ImageSharpMiddlewareOptions()));
         Assert.False(processor.RequiresTrueColorPixelFormat(commands, parser, culture));

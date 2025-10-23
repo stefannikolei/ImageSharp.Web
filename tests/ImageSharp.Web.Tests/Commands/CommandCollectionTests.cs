@@ -10,16 +10,20 @@ public class CommandCollectionTests
     [Fact]
     public void CanAddCommands()
     {
-        CommandCollection collection = new();
-        collection.Add(new KeyValuePair<string, string>("a", "b"));
+        CommandCollection collection =
+        [
+            new KeyValuePair<string, string>("a", "b")
+        ];
         Assert.Single(collection);
     }
 
     [Fact]
     public void CannotAddDuplicateCommands()
     {
-        CommandCollection collection = new();
-        collection.Add(new KeyValuePair<string, string>("a", "b"));
+        CommandCollection collection =
+        [
+            new KeyValuePair<string, string>("a", "b")
+        ];
         Assert.Throws<ArgumentException>(() => collection.Add(new KeyValuePair<string, string>("a", "b")));
         Assert.Single(collection);
     }
@@ -29,8 +33,10 @@ public class CommandCollectionTests
     {
         const string key = "a";
         const string value = "b";
-        CommandCollection collection = new();
-        collection.Add(new KeyValuePair<string, string>(key, value));
+        CommandCollection collection =
+        [
+            new KeyValuePair<string, string>(key, value)
+        ];
 
         Assert.Equal(value, collection[key]);
     }
@@ -41,8 +47,10 @@ public class CommandCollectionTests
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
 
-        CommandCollection collection = new();
-        collection.Add(kv1);
+        CommandCollection collection =
+        [
+            kv1
+        ];
         Assert.Single(collection);
 
         collection.Insert(0, kv2);
@@ -58,8 +66,10 @@ public class CommandCollectionTests
     [Fact]
     public void CannotInsertDuplicateCommands()
     {
-        CommandCollection collection = new();
-        collection.Add(new KeyValuePair<string, string>("a", "b"));
+        CommandCollection collection =
+        [
+            new KeyValuePair<string, string>("a", "b")
+        ];
         Assert.Throws<ArgumentException>(() => collection.Insert(0, new KeyValuePair<string, string>("a", "b")));
         Assert.Single(collection);
     }
@@ -70,8 +80,10 @@ public class CommandCollectionTests
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
 
-        CommandCollection collection = new();
-        collection.Add(kv1);
+        CommandCollection collection =
+        [
+            kv1
+        ];
         Assert.Single(collection);
 
         collection.Insert(0, kv2.Key, kv2.Value);
@@ -87,8 +99,10 @@ public class CommandCollectionTests
     [Fact]
     public void CannotInsertDuplicateCommandsViaKey()
     {
-        CommandCollection collection = new();
-        collection.Add(new KeyValuePair<string, string>("a", "b"));
+        CommandCollection collection =
+        [
+            new KeyValuePair<string, string>("a", "b")
+        ];
         Assert.Throws<ArgumentException>(() => collection.Insert(0, "a", "b"));
         Assert.Single(collection);
     }
@@ -98,9 +112,11 @@ public class CommandCollectionTests
     {
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
-        CommandCollection collection = new();
+        CommandCollection collection =
+        [
+            kv1
+        ];
 
-        collection.Add(kv1);
         Assert.Single(collection);
         Assert.Equal(0, collection.IndexOf(kv1));
         Assert.Equal(kv1.Value, collection[kv1.Key]);
@@ -116,9 +132,11 @@ public class CommandCollectionTests
     {
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("a", "d");
-        CommandCollection collection = new();
+        CommandCollection collection =
+        [
+            kv1
+        ];
 
-        collection.Add(kv1);
         Assert.Single(collection);
         Assert.Equal(0, collection.IndexOf(kv1));
         Assert.Equal(kv1.Value, collection[kv1.Key]);
@@ -134,10 +152,11 @@ public class CommandCollectionTests
     {
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
-        CommandCollection collection = new();
-
-        collection.Add(kv1);
-        collection.Add(kv2);
+        CommandCollection collection =
+        [
+            kv1,
+            kv2
+        ];
 
         Assert.Equal(2, collection.Count);
 
@@ -152,10 +171,11 @@ public class CommandCollectionTests
     {
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
-        CommandCollection collection = new();
-
-        collection.Add(kv1);
-        collection.Add(kv2);
+        CommandCollection collection =
+        [
+            kv1,
+            kv2
+        ];
 
         Assert.Equal(2, collection.Count);
 
@@ -170,10 +190,11 @@ public class CommandCollectionTests
     {
         KeyValuePair<string, string> kv1 = new("a", "b");
         KeyValuePair<string, string> kv2 = new("c", "d");
-        CommandCollection collection = new();
-
-        collection.Add(kv1);
-        collection.Add(kv2);
+        CommandCollection collection =
+        [
+            kv1,
+            kv2
+        ];
 
         Assert.Equal(2, collection.Count);
 
@@ -185,9 +206,9 @@ public class CommandCollectionTests
     [Fact]
     public void KeysAreOrdered()
     {
-        string[] keys = new[] { "a", "b", "c", "d" };
+        string[] keys = ["a", "b", "c", "d"];
 
-        CommandCollection collection = new();
+        CommandCollection collection = [];
         foreach (string key in keys)
         {
             collection.Insert(0, new KeyValuePair<string, string>(key, null));
@@ -206,7 +227,7 @@ public class CommandCollectionTests
     public void GetByInvalidKeyThrowsCorrectly()
         => Assert.Throws<KeyNotFoundException>(() =>
         {
-            CommandCollection collection = new();
+            CommandCollection collection = [];
             return collection["a"];
         });
 }

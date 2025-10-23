@@ -23,7 +23,7 @@ public sealed class ListConverter<T> : ICommandConverter<List<T>>
         string? value,
         Type propertyType)
     {
-        List<T> result = new();
+        List<T> result = [];
         if (string.IsNullOrWhiteSpace(value))
         {
             return result;

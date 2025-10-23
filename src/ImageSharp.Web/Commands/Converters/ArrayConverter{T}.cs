@@ -25,10 +25,10 @@ public sealed class ArrayConverter<T> : ICommandConverter<T[]>
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Array.Empty<T>();
+            return [];
         }
 
-        List<T> result = new();
+        List<T> result = [];
         foreach (string pill in GetStringArray(value, culture))
         {
             T? item = parser.ParseValue<T>(pill, culture);

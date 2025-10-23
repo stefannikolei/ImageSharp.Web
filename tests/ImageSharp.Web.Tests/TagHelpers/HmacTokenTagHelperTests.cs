@@ -30,9 +30,9 @@ public sealed class HmacTokenTagHelperTests : IDisposable
 {
     public HmacTokenTagHelperTests()
     {
-        ServiceCollection services = new();
+        ServiceCollection services = [];
         services.AddSingleton<IWebHostEnvironment, FakeWebHostEnvironment>();
-        services.AddImageSharp(options => options.HMACSecretKey = new byte[] { 1, 2, 3, 4, 5 });
+        services.AddImageSharp(options => options.HMACSecretKey = [1, 2, 3, 4, 5]);
         this.Provider = services.BuildServiceProvider();
     }
 
@@ -108,7 +108,7 @@ public sealed class HmacTokenTagHelperTests : IDisposable
 
     private static TagHelperOutput MakeImageTagHelperOutput(TagHelperAttributeList attributes)
     {
-        attributes ??= new TagHelperAttributeList();
+        attributes ??= [];
 
         return new TagHelperOutput(
             "img",

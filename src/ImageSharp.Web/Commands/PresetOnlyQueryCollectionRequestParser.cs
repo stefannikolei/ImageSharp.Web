@@ -36,7 +36,7 @@ public class PresetOnlyQueryCollectionRequestParser : IRequestParser
             || !queryCollection.ContainsKey(QueryKey))
         {
             // We return new here and below to ensure the collection is still mutable via events.
-            return new CommandCollection();
+            return [];
         }
 
         StringValues query = queryCollection[QueryKey];
@@ -46,7 +46,7 @@ public class PresetOnlyQueryCollectionRequestParser : IRequestParser
             return collection;
         }
 
-        return new CommandCollection();
+        return [];
     }
 
     private static Dictionary<string, CommandCollection> ParsePresets(
@@ -58,7 +58,7 @@ public class PresetOnlyQueryCollectionRequestParser : IRequestParser
 
     private static CommandCollection ParsePreset(string unparsedPresetValue)
     {
-        CommandCollection transformed = new();
+        CommandCollection transformed = [];
         foreach (QueryStringEnumerable.EncodedNameValuePair pair in new QueryStringEnumerable(unparsedPresetValue))
         {
             // Last value wins.

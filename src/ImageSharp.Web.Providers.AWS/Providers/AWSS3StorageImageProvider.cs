@@ -19,7 +19,7 @@ public class AWSS3StorageImageProvider : IImageProvider, IDisposable
     /// <summary>
     /// Character array to remove from paths.
     /// </summary>
-    private static readonly char[] SlashChars = { '\\', '/' };
+    private static readonly char[] SlashChars = ['\\', '/'];
 
     /// <summary>
     /// The containers for the blob services.

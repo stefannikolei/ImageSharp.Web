@@ -13,7 +13,7 @@ public class RefCountedConcurrentDictionaryTests
 
     public RefCountedConcurrentDictionaryTests()
     {
-        this.released = new ConcurrentBag<string>();
+        this.released = [];
         this.dictionary = new RefCountedConcurrentDictionary<string, string>(
             valueFactory: this.ValueForKey,
             valueReleaser: value => this.released.Add(value));
@@ -77,7 +77,7 @@ public class RefCountedConcurrentDictionaryTests
     [Fact]
     public async Task StressTest()
     {
-        string[] keys = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
+        string[] keys = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
         async Task Worker(int workerIndex)
         {
